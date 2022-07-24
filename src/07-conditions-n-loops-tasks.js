@@ -129,8 +129,11 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return (rect2.left < rect1.left + rect1.width)
+    && (rect1.left < (rect2.left + rect2.width))
+    && (rect2.top < rect1.top + rect1.height)
+    && (rect1.top < rect2.top + rect2.height);
 }
 
 
@@ -160,8 +163,8 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2 < circle.radius ** 2;
 }
 
 
@@ -416,8 +419,25 @@ function toNaryString(input, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const str = pathes[0];
+  let path = '';
+  let nextStr;
+  let res = '';
+  let isFinished = false;
+  for (let i = 0; i < str.length; i += 1) {
+    path += str[i];
+    for (let j = 1; j < pathes.length; j += 1) {
+      nextStr = pathes[j].slice(0, i + 1);
+      if (path !== nextStr) {
+        isFinished = true;
+        break;
+      }
+    }
+    if (isFinished) break;
+    res = path;
+  }
+  return res.slice(0, res.lastIndexOf('/') + 1);
 }
 
 
